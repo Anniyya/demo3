@@ -1,5 +1,8 @@
 package com.example.demo3.entity;
 
+import com.baomidou.mybatisplus.annotation.TableName;
+
+@TableName("admins")
 public class User {
     private String mmid;
     private String mpwd;

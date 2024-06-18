@@ -6,7 +6,10 @@ import com.example.demo3.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 @RestController
 @CrossOrigin
@@ -43,10 +46,27 @@ public class CustomerController {
     }
 
     @GetMapping("/page")//分页查询顾客信息
-    public List<Customer> findPage(@RequestParam("pageNum") Integer pageNum, @RequestParam("pageSize") Integer pageSize) {
+    public Map<String, Object> findPage(@RequestParam("pageNum") Integer pageNum, @RequestParam("pageSize") Integer pageSize) {
         int offset = (pageNum - 1) * pageSize;
-        System.out.println("Offset: " + offset);
-        System.out.println("Page Size: " + pageSize);
-        return customerMapper.selectPage(offset, pageSize);
+        List<Customer> data = customerMapper.selectPage(offset,pageSize);
+        Integer total = customerMapper.selectTotal();
+        Map<String, Object> res = new HashMap<>();
+        res.put("data",data);
+        res.put("total",total);
+        return res;
+    }
+
+    @GetMapping("/selectbyname") //按名字模糊查询顾客信息
+    public Map<String, Object> findPage(@RequestParam("pageNum") Integer pageNum,
+                                        @RequestParam("pageSize") Integer pageSize,
+                                        @RequestParam("cname") String cname) {
+        int offset = (pageNum - 1) * pageSize;
+        String cname2 = "%" + cname + "%";
+        List<Customer> data = customerMapper.selectPageByName(offset, pageSize, cname2);
+        Integer total = customerMapper.selectTotalByName(cname2);
+        Map<String, Object> res = new HashMap<>();
+        res.put("data", data);
+        res.put("total", total);
+        return res;
     }
 }

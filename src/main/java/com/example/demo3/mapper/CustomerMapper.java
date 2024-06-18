@@ -23,4 +23,13 @@ public interface CustomerMapper {
 
     @Select("select * from customer limit #{pageNum},#{pageSize}")
     List<Customer> selectPage(@Param("pageNum") Integer pageNum, @Param("pageSize") Integer pageSize);
+
+    @Select("select count(*) from customer")
+    Integer selectTotal();
+
+    @Select("SELECT * FROM customer WHERE cname LIKE #{cname} LIMIT #{offset}, #{pageSize}")
+    List<Customer> selectPageByName(@Param("offset") int offset, @Param("pageSize") int pageSize, @Param("cname") String cname);
+
+    @Select("SELECT count(*) FROM customer WHERE cname LIKE #{cname}")
+    Integer selectTotalByName(@Param("cname") String cname);
 }

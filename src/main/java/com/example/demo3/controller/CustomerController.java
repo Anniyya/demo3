@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 @RestController
 @CrossOrigin
@@ -21,11 +20,15 @@ public class CustomerController {
     private CustomerService customerService;
 
     @PostMapping("/insertcustomer")//增加和修改
-    public String save(Customer customer){
+    public String save(@RequestBody Customer customer){
+        System.out.println(customer.toString());
+        if (customer.getCid() == null) {
+            return "失败：cid不能为空";
+        }
         int i = customerService.save(customer);
-        if (i>0){
+        if (i > 0) {
             return "成功";
-        }else {
+        } else {
             return "失败";
         }
     }
@@ -43,6 +46,18 @@ public class CustomerController {
         }else {
             return customerMapper.deleteCustomer(customer);
         }
+    }
+
+    @PostMapping("/deletebatch")//批量删除顾客信息
+    public int deleteBatch(@RequestBody List<String> ids) {
+        System.out.println(ids); // 打印接收到的 ids，用于调试
+        return customerService.deleteCustomerById(ids);
+    }
+
+    @PostMapping("/checkbatch")//批量删除顾客信息
+    public int checkBatch(@RequestBody List<String> ids) {
+        System.out.println(ids); // 打印接收到的 ids，用于调试
+        return customerService.checkCustomerById(ids);
     }
 
     @GetMapping("/page")//分页查询顾客信息
@@ -69,4 +84,19 @@ public class CustomerController {
         res.put("total", total);
         return res;
     }
+
+    @GetMapping("/selectbyname2") //按名字模糊查询顾客信息，展示待审核的顾客
+    public Map<String, Object> findPage2(@RequestParam("pageNum") Integer pageNum,
+                                        @RequestParam("pageSize") Integer pageSize,
+                                        @RequestParam("cname") String cname) {
+        int offset = (pageNum - 1) * pageSize;
+        String cname2 = "%" + cname + "%";
+        List<Customer> data = customerMapper.selectPageByName2(offset, pageSize, cname2);
+        Integer total = customerMapper.selectTotalByName2(cname2);
+        Map<String, Object> res = new HashMap<>();
+        res.put("data", data);
+        res.put("total", total);
+        return res;
+    }
+
 }

@@ -11,6 +11,8 @@ public class Customer {
     private String cbirth;
     private String cphone;
 
+    private String cstatus;
+
     public String getCid() {
         return cid;
     }
@@ -59,15 +61,24 @@ public class Customer {
         this.cphone = cphone;
     }
 
+    public String getCstatus() {
+        return cstatus;
+    }
+
+    public void setCstatus(String cstatus) {
+        this.cstatus = cstatus;
+    }
+
     @Override
     public String toString() {
-        return "customer{" +
+        return "Customer{" +
                 "cid='" + cid + '\'' +
                 ", cpwd='" + cpwd + '\'' +
                 ", cname='" + cname + '\'' +
                 ", csex='" + csex + '\'' +
                 ", cbirth='" + cbirth + '\'' +
                 ", cphone='" + cphone + '\'' +
+                ", cstatus='" + cstatus + '\'' +
                 '}';
     }
 }

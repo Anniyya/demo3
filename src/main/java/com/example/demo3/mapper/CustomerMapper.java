@@ -50,6 +50,7 @@ public interface CustomerMapper {
     @Select("SELECT count(*) FROM customer WHERE cstatus = '待审核' AND cname LIKE CONCAT('%', #{cname}, '%')")
     Integer selectTotalByName2(@Param("cname") String cname);
 
+    //批量通过审核
     @Update({
             "<script>",
             "UPDATE customer",

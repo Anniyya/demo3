@@ -21,7 +21,6 @@ public class CustomerController {
 
     @PostMapping("/insertcustomer")//增加和修改
     public String save(@RequestBody Customer customer){
-        System.out.println(customer.toString());
         if (customer.getCid() == null) {
             return "失败：cid不能为空";
         }
@@ -50,13 +49,11 @@ public class CustomerController {
 
     @PostMapping("/deletebatch")//批量删除顾客信息
     public int deleteBatch(@RequestBody List<String> ids) {
-        System.out.println(ids); // 打印接收到的 ids，用于调试
         return customerService.deleteCustomerById(ids);
     }
 
-    @PostMapping("/checkbatch")//批量删除顾客信息
+    @PostMapping("/checkbatch")//批量通过审核顾客信息
     public int checkBatch(@RequestBody List<String> ids) {
-        System.out.println(ids); // 打印接收到的 ids，用于调试
         return customerService.checkCustomerById(ids);
     }
 
@@ -71,7 +68,7 @@ public class CustomerController {
         return res;
     }
 
-    @GetMapping("/selectbyname") //按名字模糊查询顾客信息
+    @GetMapping("/selectbyname") //按名字模糊查询顾客信息，展示已通过审核的顾客
     public Map<String, Object> findPage(@RequestParam("pageNum") Integer pageNum,
                                         @RequestParam("pageSize") Integer pageSize,
                                         @RequestParam("cname") String cname) {

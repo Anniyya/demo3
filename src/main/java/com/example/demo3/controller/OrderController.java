@@ -1,6 +1,5 @@
 package com.example.demo3.controller;
 
-import com.example.demo3.entity.Customer;
 import com.example.demo3.entity.Order;
 import com.example.demo3.mapper.OrderMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -91,5 +90,10 @@ public class OrderController {
     public int deleteBatch(@RequestBody List<String> ids) {
         orderMapper.deleteOrdersByOid(ids);
         return 1;
+    }
+
+    @GetMapping("/completed-weekly")
+    public List<Integer> getWeeklyCompletedOrders() {
+        return orderMapper.getWeeklyCompletedOrders();
     }
 }

@@ -3,6 +3,7 @@ package com.example.demo3.mapper;
 import com.example.demo3.entity.Order;
 import org.apache.ibatis.annotations.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Mapper
@@ -50,4 +51,17 @@ public interface OrderMapper {
             "</script>"
     })
     int deleteOrdersByOid(List<String> ids);
+
+    @Select("SELECT COALESCE(COUNT(orderform.oid), 0) " +
+            "FROM (" +
+            "   SELECT DATE(createtime) AS createtime " +
+            "   FROM orderform " +
+            "   WHERE createtime BETWEEN DATE_SUB(CURDATE(), INTERVAL WEEKDAY(CURDATE()) DAY) " +
+            "       AND DATE_ADD(DATE_SUB(CURDATE(), INTERVAL WEEKDAY(CURDATE()) DAY), INTERVAL 7 DAY) " +
+            "   GROUP BY DATE(createtime)" +
+            ") AS subq " +
+            "LEFT JOIN orderform ON DATE(orderform.createtime) = subq.createtime AND orderform.ostatus = '已完成' " +
+            "GROUP BY subq.createtime " +
+            "ORDER BY subq.createtime")
+    List<Integer> getWeeklyCompletedOrders();
 }

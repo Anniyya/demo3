@@ -62,4 +62,10 @@ public interface CustomerMapper {
             "</script>"
     })
     void checkCustomerById(List<String> ids);
+
+    @Select("SELECT * FROM customer WHERE cid = #{cid} AND cpwd = #{cpwd} AND cstatus = '已通过'")//用户登录校验
+    Customer findByCidAndCpwd(@Param("cid") String cid, @Param("cpwd") String cpwd);
+
+    @Select("SELECT * FROM customer WHERE cid = #{cid}")//查找用户信息
+    List<Customer> findCustomerByCid(@Param("cid") String cid);
 }

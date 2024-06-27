@@ -38,6 +38,13 @@ public class CustomerController {
         return list;//自动转换为Jason格式传给前端
     }
 
+    @GetMapping("/findcustomerbycid")//根据顾客id查找顾客信息
+    public List query2(Customer customer){
+        String cid = customer.getCid();
+        List<Customer> list = customerMapper.findCustomerByCid(cid);
+        return list;//自动转换为Jason格式传给前端
+    }
+
     @GetMapping("/deletecustomer")//根据顾客id，删除对应的顾客信息
     public int delete(Customer customer){
         if(customer.getCid() == null){

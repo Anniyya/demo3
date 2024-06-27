@@ -16,6 +16,18 @@ public class OrderController {
     //自动注入实例化对象，springboot的功能
     private OrderMapper orderMapper;
 
+    @GetMapping("/selectMyOrder")//根据顾客cid查询对应的所有订单
+    public List query2(@RequestParam("cid")String cid){
+        List<Order> list = orderMapper.selectOrderByCid(cid);
+        return list;//自动转换为Jason格式传给前端
+    }
+
+    @GetMapping("/selectOrderByOid")//根据订单oid查询对应的订单信息
+    public Order OneOrder(@RequestParam("oid")String oid){
+        Order order = orderMapper.selectOrderByOid(oid);
+        return order;//自动转换为Jason格式传给前端
+    }
+
     @GetMapping("/selectbycreatetime") //按创建日期模糊查询订单信息
     public Map<String, Object> findPage(@RequestParam("pageNum") Integer pageNum,
                                         @RequestParam("pageSize") Integer pageSize,
@@ -30,7 +42,7 @@ public class OrderController {
         return res;
     }
 
-    @GetMapping("/selectbyovertime") //按创建日期模糊查询订单信息
+    @GetMapping("/selectbyovertime") //按结束日期模糊查询订单信息
     public Map<String, Object> findPage2(@RequestParam("pageNum") Integer pageNum,
                                         @RequestParam("pageSize") Integer pageSize,
                                         @RequestParam("overtime") String overtime) {
@@ -46,7 +58,6 @@ public class OrderController {
 
     @PostMapping("/updateorder")//编辑订单信息
     public String save2(@RequestBody Order order){
-        System.out.println(order.toString());
         if (order.getOid() == null) {
             return "失败：oid不能为空";
         }
@@ -58,12 +69,12 @@ public class OrderController {
         }
     }
 
-    @PostMapping("/overOrder")//修改订单状态为已完成
+    @PostMapping("/updateOrder")//修改订单状态为已完成
     public String save(@RequestBody Order order){
         if (order.getOid() == null) {
             return "失败：oid不能为空";
         }
-        int i = orderMapper.overOrder(order);
+        int i = orderMapper.updateOrder(order);
         if (i > 0) {
             return "成功";
         } else {
@@ -80,19 +91,19 @@ public class OrderController {
         }
     }
 
-    @PostMapping("/orderbatch")//批量处理订单
+    @PostMapping("/orderbatch")//批量处理订单为已完成
     public int overBatch(@RequestBody List<String> ids) {
         orderMapper.overSelectOrder(ids);
         return 1;
     }
 
-    @PostMapping("/deleteorders")//批量删除顾客信息
+    @PostMapping("/deleteorders")//批量删除订单信息
     public int deleteBatch(@RequestBody List<String> ids) {
         orderMapper.deleteOrdersByOid(ids);
         return 1;
     }
 
-    @GetMapping("/completed-weekly")
+    @GetMapping("/completed-weekly")//统计周销量
     public List<Integer> getWeeklyCompletedOrders() {
         return orderMapper.getWeeklyCompletedOrders();
     }

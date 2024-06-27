@@ -10,6 +10,16 @@ public class Order {
     private String sum;
     private String cid;
 
+    private String way;
+
+    public String getWay() {
+        return way;
+    }
+
+    public void setWay(String way) {
+        this.way = way;
+    }
+
     public String getOid() {
         return oid;
     }
@@ -85,6 +95,7 @@ public class Order {
                 ", remark='" + remark + '\'' +
                 ", sum='" + sum + '\'' +
                 ", cid='" + cid + '\'' +
+                ", way='" + way + '\'' +
                 '}';
     }
 }

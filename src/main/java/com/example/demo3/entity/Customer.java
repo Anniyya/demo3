@@ -1,10 +1,7 @@
 package com.example.demo3.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 public class Customer {
     private String cid;
-    @JsonIgnore
     private String cpwd;
     private String cname;
     private String csex;

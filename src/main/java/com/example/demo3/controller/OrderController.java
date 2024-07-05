@@ -69,13 +69,14 @@ public class OrderController {
         }
     }
 
-    @PostMapping("/updateOrder")//修改订单状态为已完成
+    @PostMapping("/overOrder")//修改订单状态为已完成
     public String save(@RequestBody Order order){
         if (order.getOid() == null) {
             return "失败：oid不能为空";
         }
         int i = orderMapper.updateOrder(order);
-        if (i > 0) {
+        int j = orderMapper.updateDishSale(order.getOid());
+        if (i > 0 && j > 0) {
             return "成功";
         } else {
             return "失败";
@@ -106,5 +107,31 @@ public class OrderController {
     @GetMapping("/completed-weekly")//统计周销量
     public List<Integer> getWeeklyCompletedOrders() {
         return orderMapper.getWeeklyCompletedOrders();
+    }
+
+    @PostMapping("/insertOrder")
+    public Map<String, Object> insertOrder(@RequestBody Order order) {
+        Map<String, Object> result = new HashMap<>();
+        int rowsAffected = orderMapper.insertOrder(order);
+        if (rowsAffected > 0) {
+            result.put("message", "成功插入订单");
+            result.put("status", "success");
+        } else {
+            result.put("message", "插入订单失败");
+            result.put("status", "fail");
+        }
+        return result;
+    }
+
+    @GetMapping("/lastWeekOrderCount")
+    public int getLastWeekOrderCount() {
+        int lastWeekOrderCount = orderMapper.getLastWeekOrderCount();
+        return lastWeekOrderCount;
+    }
+
+    @GetMapping("/thisWeekOrderCount")
+    public int getThisWeekOrderCount() {
+        int thisWeekOrderCount = orderMapper.getThisWeekOrderCount();
+        return thisWeekOrderCount;
     }
 }

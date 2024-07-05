@@ -56,8 +56,12 @@ public class DishService {
         return dishMapper.findByDishName(dishName);
     }
 
-    public List<Dish> findByDishType(String type) {
-        return dishMapper.findByDishType(type);
+    public Map<String, Object> findByDishType(String type) {
+        List<Dish> dishes = dishMapper.findByDishType(type);
+        System.out.println("Retrieved dishes: " + dishes); // 打印dishes列表
+        Map<String, Object> result= new HashMap<>();
+        result.put("dishes", dishes);
+        return result;
     }
     public List<Dish> findPage(int offset, int pageSize) {
         return dishMapper.selectPage(offset, pageSize);
@@ -74,5 +78,9 @@ public class DishService {
 
     public int getTotalByCriteria(String dishName, String type) {
         return dishMapper.selectTotalByCriteria(dishName, type);
+    }
+
+    public List<Dish> findByKeyWord(String keyWord) {
+        return dishMapper.findByKeyWord(keyWord);
     }
 }

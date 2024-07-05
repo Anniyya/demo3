@@ -1,7 +1,7 @@
 package com.example.demo3.entity;
 
 public class Order {
-    private String oid;
+    private Integer oid;
     private String ocontent;
     private String createtime;
     private String overtime;
@@ -20,11 +20,11 @@ public class Order {
         this.way = way;
     }
 
-    public String getOid() {
+    public Integer getOid() {
         return oid;
     }
 
-    public void setOid(String oid) {
+    public void setOid(Integer oid) {
         this.oid = oid;
     }
 

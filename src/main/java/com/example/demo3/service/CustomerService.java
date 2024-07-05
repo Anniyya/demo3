@@ -14,11 +14,18 @@ public class CustomerService {
 
     public int save(Customer customer) {
         if (customer.getCid() != null) {
-            // 更新操作
-            return customerMapper.updateCustomer(customer);
-        } else {
-            // 新增操作
-            return customerMapper.insertCustomer(customer);
+            // 查询是否存在该 cid
+            Customer existingCustomer = customerMapper.selectCustomerByCid(customer.getCid());
+            if (existingCustomer != null) {
+                // 更新操作
+                return customerMapper.updateCustomer(customer);
+            } else {
+                // 插入操作
+                return customerMapper.insertCustomer(customer);
+            }
+        }else {
+            // 如果 cid 为空，直接插入新记录
+            throw new IllegalArgumentException("cid为空");
         }
     }
 

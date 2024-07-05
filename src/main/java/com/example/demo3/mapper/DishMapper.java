@@ -1,6 +1,7 @@
 package com.example.demo3.mapper;
 
 import com.example.demo3.entity.Dish;
+import com.example.demo3.entity.Picture;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
@@ -17,7 +18,8 @@ public interface DishMapper {
 
     @Select("SELECT * FROM dish WHERE type = #{type}")//查询某个类别的菜品
     List<Dish> findByDishType(String type);
-    @Insert("INSERT INTO dish(type,price,specification,dishName,picture) VALUES (#{type},#{price},#{specification},#{dishName},#{picture})")
+    @Insert("INSERT INTO dish(type,price,specification,dishName,picture,sale) VALUES (#{type},#{price},#{specification},#{dishName},#{picture},0)")
+    @Options(useGeneratedKeys = true, keyProperty = "dishId")
     int insertDish(Dish dish);
 
     @Update("UPDATE dish SET type=#{type},price=#{price},specification=#{specification},picture=#{picture} ,dishName=#{dishName} WHERE dishId = #{dishId}")
@@ -42,5 +44,15 @@ public interface DishMapper {
 
     @Select("SELECT COUNT(*) FROM dish WHERE dishName LIKE #{dishName} AND type LIKE #{type}")
     int selectTotalByCriteria(@Param("dishName") String dishName, @Param("type") String type);
+
+    @Select("SELECT dishName , sale \n" +
+            "FROM dish\n" +
+            "ORDER BY sale DESC\n" +
+            "LIMIT 5;\n")
+    List<Dish> findTopFiveBySale();
+
+    @Select("SELECT * FROM dish WHERE dishName LIKE CONCAT('%', #{keyWord}, '%')")
+    List<Dish> findByKeyWord(String keyWord);
+
 
 }

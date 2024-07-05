@@ -68,4 +68,7 @@ public interface CustomerMapper {
 
     @Select("SELECT * FROM customer WHERE cid = #{cid}")//查找用户信息
     List<Customer> findCustomerByCid(@Param("cid") String cid);
+
+    @Select("SELECT * FROM customer WHERE cid = #{cid}")
+    Customer selectCustomerByCid(String cid);
 }

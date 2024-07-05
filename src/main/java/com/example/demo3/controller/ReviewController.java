@@ -3,6 +3,7 @@ package com.example.demo3.controller;
 import com.example.demo3.entity.Order;
 import com.example.demo3.entity.Review;
 import com.example.demo3.mapper.ReviewMapper;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,6 +21,11 @@ public class ReviewController {
     @GetMapping("/selectAllReview")//查询所有留言信息
     public List query(){
         List<Review> list = reviewMapper.selectAllReview();
+        return list;//自动转换为Jason格式传给前端
+    }
+    @GetMapping("/selectMyReview")//查询个人所有留言信息
+    public List query2(@RequestParam("cid") String cid){
+        List<Review> list = reviewMapper.selectMyReview(cid);
         return list;//自动转换为Jason格式传给前端
     }
 

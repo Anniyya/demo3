@@ -12,7 +12,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.UUID;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -60,7 +59,8 @@ public class PictureController {
     }
 
     @PostMapping("/delete")
-    public String deletePicture(@RequestBody int picid) {
+    public String deletePicture(@RequestBody Map<String, Integer> requestBody) {
+        Integer picid = requestBody.get("picid");
         try {
             // 根据 picid 查询图片信息，获取图片名称 picname
             Picture picture = pictureMapper.findPicnameById(picid);
@@ -75,8 +75,7 @@ public class PictureController {
             }
 
             // 删除 static/assets 目录下对应的图片文件
-            System.out.println(picture.getPicname());
-            String filename = picture.getPicname() + "11.jpg"; // 假设图片后缀为 jpg
+            String filename = picture.getPicname() + ".jpg"; // 假设图片后缀为 jpg
             Path filePath = Paths.get("D:/IdeaCode/CurriculumDesign2/demo3/src/main/resources/static/assets", filename);
             Files.delete(filePath);
 
@@ -86,6 +85,7 @@ public class PictureController {
             return "失败";
         }
     }
+
 
     @PostMapping("/deleteSelected")
     public String deleteSelectedPictures(@RequestBody List<Integer> ids) {

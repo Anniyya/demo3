@@ -8,6 +8,16 @@ public class Dish {
     private String picture;
     private int dishId;
 
+    private int sale;
+
+    public int getSale() {
+        return sale;
+    }
+
+    public void setSale(int sale) {
+        this.sale = sale;
+    }
+
     public String getType() {
         return type;
     }

@@ -20,6 +20,11 @@ public interface ReviewMapper {
     @Select("SELECT * FROM review WHERE rcontent LIKE CONCAT('%', #{rcontent}, '%') LIMIT #{offset}, #{pageSize}")
     List<Review> selectAllReviewByPage(@Param("offset") int offset, @Param("pageSize") int pageSize, @Param("rcontent") String rcontent);
 
+    @Select("SELECT *\n" +
+            "FROM review\n" +
+            "WHERE cid = #{cid}")
+    List<Review> selectMyReview(@Param("cid") String cid);
+
     @Select("SELECT count(*) FROM review WHERE rcontent LIKE CONCAT('%', #{rcontent}, '%')")
     Integer selectTotalByRcontent(@Param("rcontent") String rcontent);
 }
